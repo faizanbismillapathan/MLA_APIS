@@ -1,0 +1,12 @@
+mdi mdi-finance                 : Finance
+mdi mdi-block-helper            : Aid
+
+mdi mdi-currency-inr            :Purchase
+mdi mdi-calendar-multiple-check : Event
+
+mdi mdi-car-hatchback           :Travel 
+mdi mdi-note-multiple-outline  :Plan / Proposal
+
+mdi mdi-account-switch          :Tanzeem
+
+

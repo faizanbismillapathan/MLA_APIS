@@ -1,0 +1,130 @@
+// katavani details
+
+
+select 
+      k.Khatavani_Details_ID,
+      k.GoanID,
+      g.GaonName,
+      k.Total_number_of_voters,
+      k.No_of_booths,
+      k.Hindu,
+      k.Muslim,
+      k.Baudhaa,
+      k.Other
+      from khatavani_details k left join gaon g
+      on k.GoanID = g.id;
+
+
+// vote received by bjp
+
+
+select 
+      v.Votes_received_by_BJP_ID,
+      v.GoanID,
+      g.GaonName,
+      v.Year,
+      v.Total_votes,
+      v.Received_votes,
+      v.Percentage,
+      v.Remark
+      from votes_received_by_bjp v left join gaon g
+      on v.GoanID = g.id;
+
+
+// sarpanch etc
+
+select
+      s.Sarpanch_etc_ID,
+      s.GoanID,
+      g.GaonName,
+      s.Degisnation,
+      s.Year,
+      s.Name_ID,
+      concat(c.fname, ' ', c.lname) as Name,
+      s.Remark
+from sarpanch_etc s
+left join gaon g on s.GoanID = g.id
+left join citizens c on s.Name_ID = c.id;
+
+
+
+// voters by caste
+
+select 
+      v.Voters_by_Caste_ID,
+      v.GoanID,
+      g.GaonName,
+      v.Cast_OR_Community_Name,
+      v.Number,
+      v.Remark
+from voters_by_caste v 
+left join gaon g on v.GoanID = g.id;
+
+
+
+// party workers
+
+
+select 
+      p.Party_Workers_ID,
+      p.GoanID,
+      g.GaonName,
+      p.Party,
+      p.Name_ID,
+      concat(c.fname, ' ', c.lname) as Name,
+      p.Party_Responsibility,
+      p.Status
+from party_workers p  
+left join gaon g on p.GoanID = g.id
+left join citizens c on p.Name_ID = c.id;
+
+
+
+// influential person
+
+select 
+      i.Influential_Persons_ID,
+      i.GoanID,
+      g.GaonName,
+      i.Degisnation,
+      i.Name_ID,
+      concat(c.fname, ' ', c.lname) as Name,
+      i.Society,
+      i.Status
+from influential_persons i 
+left join gaon g on i.GoanID = g.id
+left join citizens c on i.Name_ID = c.id;
+
+
+// proposed work
+
+select 
+      p.proposed_Work_ID,
+      p.GoanID,
+      g.GaonName,
+      p.workName,
+      p.price,
+      p.reference,
+      p.priority
+from proposed_work p
+left join gaon g on p.GoanID = g.id;
+
+
+
+
+// out of town voter  
+
+
+select 
+      o.Out_of_Town_Voter_ID,
+      o.GoanID,
+      g.GaonName,
+      o.Name_ID,
+      concat(c.fname, ' ', c.lname) as Name,
+      o.Society,
+      o.voter_List_No,
+      o.reference
+from `out-of-town_voter` o 
+left join gaon g on o.GoanID = g.id
+left join citizens c on o.Name_ID = c.id;
+

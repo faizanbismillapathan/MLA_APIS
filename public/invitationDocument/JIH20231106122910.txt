@@ -1,0 +1,17 @@
+select * from ManageDepartment
+select * from UserDepartment
+update EmailRequest set isactive=1 where Req_ID='PUR40' AND Req_ResponseID= 116
+--truncate table UserDepartment
+select * from EmailRequest
+select * from ManageEmployee
+
+select * from TravelRequestDetail
+select * from TravelRequest
+
+
+
+select * from Packing
+select * from HamaliMaster
+select * from Product
+select * from StockReceipt
+select * from StockReceiptdetail

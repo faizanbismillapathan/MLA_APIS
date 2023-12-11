@@ -1,0 +1,131 @@
+public function getComplaintDetailsByFilter($complaintCategoryId = null, $complaintSubCategoryId = null, $assemblyId = null, $cityType = null, $wardId = null, $wardAreaId = null, $zillaParishadId = null, $talukaPanchayatId = null, $gaonId = null, $status = null, $FromDate = null, $ToDate = null)
+{
+    $query = DB::table('complaint_details as cd')
+        ->select(
+            'cd.id AS complaintDetailsId',
+            'cd.complainerId',
+            'cd.issue',
+            'cd.actualComplaintDate',
+            'cd.complaintCategoryId',
+            'cc.complaintCategoryName',
+            'cd.complaintSubCategoryId',
+            'csc.complaintSubCategoryName',
+            'cd.complaintDueDate',
+            'cd.address',
+            'cd.assemblyId',
+            'a.assemblyName',
+            'cd.cityType',
+            'cd.gaonId',
+            'g.gaonName',
+            'cd.talukaPanchayatId',
+            'cd.zillaParishadId',
+            'cd.wardId',
+            'w.wardName',
+            'cd.wardAreaId',
+            'wa.wardAreaName',
+            'cd.followUp',
+            'cd.status'
+        )
+        ->leftJoin('citizens as c', 'cd.complainerId', '=', 'c.id')
+        ->leftJoin('complaint_category as cc', 'cd.complaintCategoryId', '=', 'cc.id')
+        ->leftJoin('complaint_sub_category as csc', 'cd.complaintSubCategoryId', '=', 'csc.id')
+        ->leftJoin('assembly as a', 'cd.assemblyId', '=', 'a.id')
+        ->leftJoin('gaon as g', 'cd.gaonId', '=', 'g.id')
+        ->leftJoin('taluka_panchayats as tp', 'cd.talukaPanchayatId', '=', 'tp.id')
+        ->leftJoin('zilla_parishads as zp', 'cd.zillaParishadId', '=', 'zp.id')
+        ->leftJoin('ward as w', 'cd.wardId', '=', 'w.id')
+        ->leftJoin('wardArea as wa', 'cd.wardAreaId', '=', 'wa.id');
+
+        if ($complaintCategoryId !== 'null' && $complaintCategoryId !== null) {
+            $query->where('cd.complaintCategoryId', $complaintCategoryId);
+        }
+    
+        if ($complaintSubCategoryId !== 'null' && $complaintSubCategoryId !== null) {
+            $query->where('cd.complaintSubCategoryId', $complaintSubCategoryId);
+        }
+    
+        if ($assemblyId !== 'null' && $assemblyId !== null) {
+            $query->where('cd.assemblyId', $assemblyId);
+        }
+    
+        if ($cityType !== 'null' && $cityType !== null) {
+            $query->where('cd.cityType', $cityType);
+        }
+    
+        if ($wardId !== 'null' && $wardId !== null) {
+            $query->where('cd.wardId', $wardId);
+        }
+    
+        if ($wardAreaId !== 'null' && $wardAreaId !== null) {
+            $query->where('cd.wardAreaId', $wardAreaId);
+        }
+
+        if ($zillaParishadId !== 'null' && $zillaParishadId !== null) {
+            $query->where('cd.zillaParishadId', $zillaParishadId);
+        }
+
+        if ($talukaPanchayatId !== 'null' && $talukaPanchayatId !== null) {
+            $query->where('cd.talukaPanchayatId', $talukaPanchayatId);
+        }
+
+        if ($gaonId !== 'null' && $gaonId !== null) {
+            $query->where('cd.gaonId', $gaonId);
+        }
+
+        if ($status !== 'null' && $status !== null) {
+            $query->where('cd.status', $status);
+        }
+    
+        if ($FromDate !== 'null' && $ToDate !== 'null' && $FromDate !== null && $ToDate !== null) {
+            $query->whereBetween('cd.actualComplaintDate', [$FromDate, $ToDate]);
+        }
+
+    $data = $query->get();
+
+    $results = [];
+
+    foreach ($data as $item) {
+        $res = [
+            'complaintDetailsId' => $item->complaintDetailsId,
+            'complainerId' => $item->complainerId,
+            'issue' => $item->issue,
+            'actualComplaintDate' => $item->actualComplaintDate,
+            'complaintCategoryId' => $item->complaintCategoryId,
+            'complaintCategoryName' => $item->complaintCategoryName,
+            'complaintSubCategoryId' => $item->complaintSubCategoryId,
+            'complaintSubCategoryName' => $item->complaintSubCategoryName,
+            'complaintDueDate' => $item->complaintDueDate,
+            'address' => $item->address,
+            'assemblyId' => $item->assemblyId,
+            'assemblyName' => $item->assemblyName,
+            'cityType' => $item->cityType,
+            'gaonId' => $item->gaonId,
+            'gaonName' => $item->gaonName,
+            'talukaPanchayatId' => $item->talukaPanchayatId,
+            'zillaParishadId' => $item->zillaParishadId,
+            'wardId' => $item->wardId,
+            'wardName' => $item->wardName,
+            'wardAreaId' => $item->wardAreaId,
+            'wardAreaName' => $item->wardAreaName,
+            'followUp' => $item->followUp,
+            'status' => $item->status,
+        ];
+        $results[] = $res;
+    }
+
+    if (count($data) != 0) {
+        return response()->json([
+            'code' => 200,
+            'data' => $results,
+            'message' => 'Data Fetched',
+        ]);
+    } else {
+        return response()->json([
+            'code' => 404,
+            'data' => [],
+            'message' => 'Data Not Found',
+        ]);
+    }
+}
+-------------------------------------------------------------------------
+Route::get('searchcomplaintDetails/{complaintCategoryId?}/{complaintSubCategoryId?}/{assemblyId?}/{cityType?}/{wardId?}/{wardAreaId?}/{zillaParishadId?}/{talukaPanchayatId?}/{gaonId?}/{status?}/{FromDate?}/{ToDate?}',[ComplaintDetailsController::class,'getComplaintDetailsByFilter']);

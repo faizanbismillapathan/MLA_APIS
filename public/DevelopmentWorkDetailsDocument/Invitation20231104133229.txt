@@ -1,0 +1,87 @@
+public function getInvitationsByFilter($priority = null, $status = null, $eventTypeId = null, $routeid = null, $assemblyid = null, $cityType = null, $FromDate = null, $ToDate = null)
+    {
+        $query = DB::table('invitations as I')
+            ->select(
+                'I.id',
+                'IT.invitationTypeName',
+                'I.token',
+                'I.eventDate',
+                'I.priority',
+                'R.routeName',
+                'W.wardName',
+                'G.gaonName',
+                'I.inviterId',
+                'I.referenceId'
+            )
+            ->leftJoin('invitation_types as IT', 'I.eventTypeId', '=', 'IT.id')
+            ->leftJoin('routes as R', 'I.routeId', '=', 'R.id')
+            ->leftJoin('ward as W', 'I.wardId', '=', 'W.id')
+            ->leftJoin('gaon as G', 'I.gaonId', '=', 'G.id')
+            ->leftJoin('assembly as A', 'I.assemblyId', '=', 'A.id');
+
+            if ($priority !== 'null' && $priority !== null) {
+                $query->where('I.priority', $priority);
+            }
+        
+            if ($status !== 'null' && $status !== null) {
+                $query->where('I.status', $status);
+            }
+        
+            if ($eventTypeId !== 'null' && $eventTypeId !== null) {
+                $query->where('I.eventTypeId', $eventTypeId);
+            }
+        
+            if ($routeid !== 'null' && $routeid !== null) {
+                $query->where('I.routeId', $routeid);
+            }
+        
+            if ($assemblyid !== 'null' && $assemblyid !== null) {
+                $query->where('I.assemblyId', $assemblyid);
+            }
+        
+            if ($cityType !== 'null' && $cityType !== null) {
+                $query->where('I.cityType', $cityType);
+            }
+        
+            if ($FromDate !== 'null' && $ToDate !== 'null' && $FromDate !== null && $ToDate !== null) {
+                $query->whereBetween('I.eventDate', [$FromDate, $ToDate]);
+            }
+
+        $data = $query->get();
+
+        $results = [];
+
+        foreach ($data as $item) {
+            $res = [
+                'id' => $item->id,
+                'invitationTypeName' => $item->invitationTypeName,
+                'token' => $item->token,
+                'eventDate' => $item->eventDate,
+                'priority' => $item->priority,
+                'routeName' => $item->routeName,
+                'wardName' => $item->wardName,
+                'gaonName' => $item->gaonName,
+                'inviterId' => $item->inviterId,
+                'referenceId' => $item->referenceId,
+            ];
+            $results[] = $res;
+        }
+
+        if (count($data) != 0) {
+            return response()->json([
+                'code' => 200,
+                'data' => $results,
+                'message' => 'Data Fetched',
+            ]);
+        } else {
+            return response()->json([
+                'code' => 404,
+                'data' => [],
+                'message' => 'Data Not Found',
+            ]);
+        }
+    }
+
+
+--------------------------------------------------------------
+	
