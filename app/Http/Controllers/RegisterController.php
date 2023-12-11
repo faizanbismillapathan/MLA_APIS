@@ -51,6 +51,7 @@ class RegisterController extends Controller
         //     'registerType', 'status', 'outwardId', 'created_by',
         // ]);
         // Add Register
+        $data = '';
         if ($request->registerType == 'Inward') {
             $test = Register::where('registerType', 'Inward')
                 ->orderBy('id', 'desc')
@@ -166,7 +167,7 @@ class RegisterController extends Controller
                 'code' => 200,
                 'data' => $Register,
                 'document' => $RegisterDocument,
-                'token' => $data,
+                'token' => $data ? $data : null,
                 // 'document' => $RegisterDocument ? $RegisterDocument : null,
                 'message' => 'Register Added Sucecssfully',
             ]);

@@ -192,7 +192,7 @@ Route::get('fuel/showVehicleIdWise/{vehicalId}', [FuelController::class, 'showVe
 
 // ============================================Register=============================================================
 Route::post('addRegister', [RegisterController::class, 'store']);
-Route::get('viewRegister', [RegisterController::class, 'index']);
+Route::get('viewRegister', [RegisterController::class, 'index']); 
 Route::get('register/show/{registerId}', [RegisterController::class, 'show']);
 //Route::get('viewRegisterByPagination/{pageNo}', [RegisterController::class, 'viewRegisterByPagination']);
 Route::get('showRegisterByRegisterType/{pageNo}/{pageSize}/{registerType?}/{token?}/{status?}/{person?}', [RegisterController::class, 'showRegisterByRegisterType']);
